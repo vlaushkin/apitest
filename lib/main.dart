@@ -120,7 +120,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: FutureBuilder<List<CityLocation>>(
-            future: fetchCityLocations("tok"),
+            future: fetchCityLocations("ni"),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final List<CityLocation> futureResult = snapshot.data!;
@@ -128,7 +128,14 @@ class _MyAppState extends State<MyApp> {
                 if (futureResult.isEmpty) {
                   return Text("The result is empty!", style: TextStyle(fontSize: 24),);
                 } else {
-                  return Text("The first result is ${futureResult[0].title}", style: TextStyle(fontSize: 24),);
+                  List<Widget> resultChildren = [];
+                  for (var value in futureResult) {
+                    resultChildren.add(Text("${value.title} - ${value.locationType}", style: TextStyle(fontSize: 24),));
+                  }
+
+                  return ListView(
+                    children: resultChildren,
+                  );
                 }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
